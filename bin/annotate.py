@@ -18,14 +18,18 @@ def read_paragraphs(it):
 
 def annotate_and_print(it_par, nlp):
     for par in nlp.pipe(it_par, batch_size=5):
+        print(par)
+        print('\n')
         for token in par:
             if token.text == '\n':
                 print()
             else:
-                new_string = token.text + SEP + token.lemma_ + SEP + token.pos_ + SEP
+                new_string = token.text + ' [' + token.lemma_ + '] ' + token.pos_
                 if token._.offset:
-                    new_string += token._.offset
+                    # new_string += token._.offset
+                    new_string += " ==>" + token._.synset.definition() + f" {token._.synset.lemma_names()}"
                 print(new_string, end=' ')
+                print()
         print()
         print()
 
