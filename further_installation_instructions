@@ -1,0 +1,62 @@
+This details how to install EWISER on CentOS 7.9 in the cloud
+
+
+curl https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh --output Anaconda3-2022.05-Linux-x86_64.sh
+
+bash Anaconda3-2022.05-Linux-x86_64.sh ... manual steps
+
+--- restart terminal ---
+
+conda create -n ewiser python=3.7 pip; conda activate ewiser
+
+
+>>> USE THIS IF GPU PRESENT 
+conda install pytorch=1.6.0 torchvision cudatoolkit=10.1 -c pytorch
+>>> ELSE
+conda install pytorch=1.6.0 torchvision -c pytorch
+
+
+>>> USE THIS IF GPU PRESENT 
+pip install torch-scatter torch-sparse -f https://pytorch-geometric.com/whl/torch-1.6.0+cu101.html
+>>> ELSE
+pip install torch-scatter torch-sparse -f https://pytorch-geometric.com/whl/torch-1.6.0+cpu.html
+
+>>> USE THIS IF GPU PRESENT 
+pip install https://data.pyg.org/whl/torch-1.6.0%2Bcu102/torch_scatter-2.0.6-cp37-cp37m-linux_x86_64.whl
+pip install https://data.pyg.org/whl/torch-1.6.0%2Bcu102/torch_sparse-0.6.9-cp37-cp37m-linux_x86_64.whl
+>>> ELSE
+pip install https://data.pyg.org/whl/torch-1.6.0%2Bcpu/torch_scatter-2.0.6-cp37-cp37m-linux_x86_64.whl
+pip install https://data.pyg.org/whl/torch-1.6.0%2Bcpu/torch_sparse-0.6.9-cp37-cp37m-linux_x86_64.whl
+
+sudo -E yum install git
+
+git clone https://github.com/SapienzaNLP/ewiser.git
+cd ewiser
+
+nano requirements to remove the torch_scatter
+
+pip install -r requirements.txt
+pip install -e .
+
+pip uninstall torch
+
+pip install torch==1.6.0
+
+pip install spacy
+
+python -m spacy download en_core_web_sm
+
+cat << EOF > test.txt
+I went to the bank to deposit my money
+
+The river bank was full of dead fishes
+
+CTRL-D
+
+python >>
+import nltk
+nltk.download('popular')
+
+
+
+python /home/dan/ewiser/bin/annotate.py -c /home/dan/ewiser/res/downloaded/ewiser.semcor_base.pt test.txt
