@@ -33,6 +33,7 @@ def annotate_and_print(it_par, nlp):
         print()
         print()
 
+nlp = None
 
 def test_run():
     # -d cuda - c / home / danmincu / ewiser / res / downloaded / ewiser.semcor + wngt.pt / home / danmincu / ewiser / test.txt
@@ -47,10 +48,12 @@ def test_run():
     spacy = 'en_core_web_sm'
     language = 'en'
     input = '/home/danmincu/ewiser/test.txt'
-    wsd = Disambiguator(checkpoint, lang=language, batch_size=5, save_wsd_details=False).eval()
-    wsd = wsd.to(device)
-    nlp = load(spacy, disable=['ner', 'parser'])
-    wsd.enable(nlp, 'wsd')
+    global nlp
+    if not nlp:
+        wsd = Disambiguator(checkpoint, lang=language, batch_size=5, save_wsd_details=False).eval()
+        wsd = wsd.to(device)
+        nlp = load(spacy, disable=['ner', 'parser'])
+        wsd.enable(nlp, 'wsd')
 
     if input == '-':
         lines = fileinput.input(['-'])

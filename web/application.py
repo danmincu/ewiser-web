@@ -12,7 +12,8 @@ from web.response_wrappers import json_response_with_time
 from web.responses.response import ResponseBuilder
 
 app = Flask(__name__)
-processor = annotate
+processor = None
+
 
 @app.route('/')
 def index():
@@ -24,6 +25,9 @@ def index():
 @json_response_with_time
 def definitions(word, pos):
 
+    global processor
+    if not processor:
+        processor = annotate
     use_similar = request.args.get('use_similar', None) is not None
 
     # -d cuda - c / home / danmincu / ewiser / res / downloaded / ewiser.semcor + wngt.pt / home / danmincu / ewiser / test.txt
