@@ -34,6 +34,33 @@ def annotate_and_print(it_par, nlp):
         print()
 
 
+def test_run():
+    # -d cuda - c / home / danmincu / ewiser / res / downloaded / ewiser.semcor + wngt.pt / home / danmincu / ewiser / test.txt
+    from argparse import ArgumentParser
+    import fileinput
+
+    from ewiser.spacy.disambiguate import Disambiguator
+    from spacy import load
+
+    checkpoint = "/home/danmincu/ewiser/res/downloaded/ewiser.semcor+wngt.pt"
+    device = 'cuda'
+    spacy = 'en_core_web_sm'
+    language = 'en'
+    input = '/home/danmincu/ewiser/test.txt'
+    wsd = Disambiguator(checkpoint, lang=language, batch_size=5, save_wsd_details=False).eval()
+    wsd = wsd.to(device)
+    nlp = load(spacy, disable=['ner', 'parser'])
+    wsd.enable(nlp, 'wsd')
+
+    if input == '-':
+        lines = fileinput.input(['-'])
+        pars = read_paragraphs(lines)
+        annotate_and_print(pars, nlp)
+    else:
+        with open(input) as lines:
+            pars = read_paragraphs(lines)
+            annotate_and_print(pars, nlp)
+
 if __name__ == '__main__':
 
     from argparse import ArgumentParser
