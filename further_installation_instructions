@@ -28,7 +28,11 @@ pip install https://data.pyg.org/whl/torch-1.6.0%2Bcu102/torch_sparse-0.6.9-cp37
 pip install https://data.pyg.org/whl/torch-1.6.0%2Bcpu/torch_scatter-2.0.6-cp37-cp37m-linux_x86_64.whl
 pip install https://data.pyg.org/whl/torch-1.6.0%2Bcpu/torch_sparse-0.6.9-cp37-cp37m-linux_x86_64.whl
 
-sudo -E yum install git
+FOR WINDOWS TRY 
+ pip install https://data.pyg.org/whl/torch-1.6.0%2Bcpu/torch_scatter-2.0.6-cp37-cp37m-win_amd64.whl
+ pip install https://data.pyg.org/whl/torch-1.6.0%2Bcpu/torch_sparse-0.6.9-cp37-cp37m-win_amd64.whl
+
+If nededed >>> sudo -E yum install git
 
 git clone https://github.com/SapienzaNLP/ewiser.git
 cd ewiser
@@ -37,7 +41,7 @@ nano requirements to remove the torch_scatter
 
 pip install -r requirements.txt
 pip install -e .
-
+cat
 pip uninstall torch
 
 pip install torch==1.6.0
@@ -60,3 +64,21 @@ nltk.download('popular')
 >>> download `ewiser.semcor_base.pt` in the folder below
 
 python ~/ewiser-web/bin/annotate.py -c ~/ewiser-web/res/downloaded/ewiser.semcor_base.pt test.txt
+
+
+
+
+UPDATE: THIS WORKED IN WINDOWS AND UPDATED EVERYTHING AT THE TIME OF RUNNING IT (installed Python 3.10)
+
+
+conda create -n ewiser python pip
+source activate ewiser
+conda install pytorch torchvision cudatoolkit -c pytorch
+pip install -r requirements.txt
+pip install torch_scatter
+pip install spacy
+python -m spacy download en_core_web_sm
+pip install nltk
+pip install fairseq
+pip install -e .
+pip install torch-sparse
